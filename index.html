@@ -8,10 +8,43 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css"/>
+    <style>
+        @font-face {
+            font-family : 'Open Sans';
+            src : url("./css/fonts/OpenSans-VariableFont_wdth,wght.ttf");
+        }
+        body {
+            font-family: "Open Sans";
+        }
+    </style>
 </head>
 <body>
-<div class="col-md-6 mx-auto shadow mt-4">
-    <h4 class="text-center p-5 text-primary">Network Monitor</h4>
+<div class="col-md-6 mx-auto mt-4 p-3 text-center border-0 border-bottom border-danger">
+    <h4>Network Traffic</h4>
+    <div class="row">
+        <h1 style="font-size: 200px; font-weight: bolder;" class="col-md-12"><span class="text-primary" style="letter-spacing: -10px">100</span> <sup><span style="font-size:20px">GB</span></sup></h1>
+        <h4 class="col-md-12">of data transferred</h4>
+    </div>
+    <div class="row p-3">
+        <div class="col-md-4">
+            <h2>Traffic out</h2>
+            <div class=" border-0 border-top p-2">
+                30Gbs
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h2>Traffic In</h2>
+            <div class=" border-0 border-top p-2">
+                30Gbs
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h2>Speed</h2>
+            <div class=" border-0 border-top p-2">
+                100Gbs
+            </div>
+        </div>
+    </div>
 </div>
 <script src="./bootstrap/js/bootstrap.min.js"></script>
 <script src="./jquery.js"></script>
