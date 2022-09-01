@@ -27,26 +27,57 @@
     </div>
     <div class="row p-3">
         <div class="col-md-4">
-            <h2>Traffic out</h2>
+            <h6 class="text-primary">Traffic out</h6>
             <div class=" border-0 border-top p-2">
                 30Gbs
             </div>
         </div>
         <div class="col-md-4">
-            <h2>Traffic In</h2>
-            <div class=" border-0 border-top p-2">
+            <h6 class="text-info">Traffic In</h6>
+            <div class=" border-0 border-top p-2 bg-info text-white">
                 30Gbs
             </div>
         </div>
         <div class="col-md-4">
-            <h2>Speed</h2>
+            <h6>Speed</h6>
             <div class=" border-0 border-top p-2">
                 100Gbs
             </div>
         </div>
+        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
     </div>
 </div>
 <script src="./bootstrap/js/bootstrap.min.js"></script>
 <script src="./jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+<script>
+    var xyValues = [
+        {x:50, y:7},
+        {x:60, y:8},
+        {x:70, y:8},
+        {x:80, y:9},
+        {x:90, y:9},
+        {x:100, y:9},
+    ];
+
+    new Chart("myChart", {
+        type: "line",
+        data: {
+            datasets: [{
+                pointRadius: 4,
+                pointBackgroundColor: "rgb(0,0,255)",
+                data: xyValues
+            }]
+        },
+        options: {
+            legend: {display: false},
+            scales: {
+                xAxes: [{ticks: {min: 40, max:160}}],
+                yAxes: [{ticks: {min: 6, max:9}}],
+            }
+        }
+    });
+</script>
 </body>
 </html>
