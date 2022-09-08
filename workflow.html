@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>
+        Sneaky
+    </title>
+    <meta name="description" content="Network">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css"/>
+    <link rel="icon" type="image/png" href="logo.png">
+    <style>
+        @font-face {
+            font-family : 'Open Sans';
+            src : url("./css/fonts/OpenSans-VariableFont_wdth,wght.ttf");
+        }
+        body {
+            font-family: "Open Sans";
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="logo.png" alt="Network Sniffer" style="width:40px;" class="rounded-pill">
+        </a>
+        <span class="navbar-text">SNEAKY</span>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">HOME</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./alarm.html">Alarm</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./workflow.html">Work flow</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">ADMINISTRATOR</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 mt-4 border-0 border-bottom border-danger">
+            <div class="card">
+                <div class="card-header">
+                    Machine Information
+                </div>
+                <div class="card-body">
+                    <h3 id="machineInfo"></h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mt-4 border-0 border-bottom border-danger">
+            <div class="card">
+                <div class="card-header">
+                    Network Adaptor
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <th>SO.</th>
+                            <th>Network interface</th>
+                            <th>Activity</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./bootstrap/js/bootstrap.min.js"></script>
+<script src="./jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+<script>
+    var xyValues = [
+        {x:50, y:7},
+        {x:60, y:8},
+        {x:70, y:8},
+        {x:80, y:9},
+        {x:90, y:9},
+        {x:100, y:9},
+    ];
+
+    new Chart("myChart", {
+        type: "line",
+        data: {
+            datasets: [{
+                pointRadius: 4,
+                pointBackgroundColor: "rgb(0,0,255)",
+                data: xyValues
+            }]
+        },
+        options: {
+            legend: {display: false},
+            scales: {
+                xAxes: [{ticks: {min: 40, max:160}}],
+                yAxes: [{ticks: {min: 6, max:9}}],
+            }
+        }
+    });
+</script>
+</body>
+</html>
+
+
+<!--            <div class="">-->
+<!--                <div class="row">-->
+<!--                    <h1 style="font-size: 200px; font-weight: bolder;" class="col-md-12"><span class="text-primary" style="letter-spacing: -10px">100</span> <sup><span style="font-size:20px">GB</span></sup></h1>-->
+<!--                    <h4 class="col-md-12">of data transferred</h4>-->
+<!--                </div>-->
+<!--                <div class="row p-3 shadow mb-4">-->
+<!--                    <div class="col-md-4">-->
+<!--                        <h6 class="text-primary">Traffic out</h6>-->
+<!--                        <div class=" border-0 border-top p-2">-->
+<!--                            30Gbs-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-4">-->
+<!--                        <h6 class="text-info">Traffic In</h6>-->
+<!--                        <div class=" border-0 border-top p-2 bg-info text-white">-->
+<!--                            30Gbs-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-4">-->
+<!--                        <h6>Speed</h6>-->
+<!--                        <div class=" border-0 border-top p-2">-->
+<!--                            100Gbs-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <canvas id="myChart" style="width:100%;max-width:700px"></canvas>-->
+<!--            </div>-->
+<script>
+    $.get("traffic.php?os", function success(data){
+        console.log(data)
+        let d = JSON.parse(data)
+        $("#machineInfo").html(d.os_version)
+    })
+    get_traffic();
+
+    function get_traffic() {
+        $.get("traffic.php?os2", function success(data){
+            console.log(data)
+            let d = JSON.parse(data)
+            $("#traffic_in").html(d.in + " pa")
+            $("#traffic_out").html(d.out + " pa")
+        })
+
+    }
+    setInterval(function(){
+        get_traffic()
+    }, 4000)
+</script>
