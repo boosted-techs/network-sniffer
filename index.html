@@ -17,10 +17,25 @@
         body {
             font-family: "Open Sans";
         }
+        .bottom {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 50px;
+            z-index: 99;
+        }
+
+        .bottom-right{
+            position: fixed;
+            bottom: 55px;
+            right: 0;
+            width: 200px;
+        }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
             <img src="logo.png" alt="Network Sniffer" style="width:40px;" class="rounded-pill">
@@ -36,142 +51,85 @@
             <li class="nav-item">
                 <a class="nav-link" href="./workflow.html">Work flow</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">ADMINISTRATOR</a>
-            </li>
         </ul>
     </div>
 </nav>
 <div class="container">
     <div class="row">
-        <div class="col-md-3 mt-4 border-0 border-bottom border-danger">
-            <div class="card">
-                <div class="card-header">
-                    Machine Information
-                </div>
-                <div class="card-body">
-                    <h3 id="machineInfo"></h3>
-                </div>
-            </div>
+        <div class="col-md-12 text-center pt-5">
+            <img src="logo.png" alt="Network Sniffer" style="width:50px;" class="rounded-pill">
+            <h5 class="text-primary p-4 text-center">
+                Welcome to Sneaky Packet Capture Tool
+            </h5>
         </div>
-        <div class="col-md-3 mt-4 border-0 border-bottom border-danger">
-            <div class="card">
-                <div class="card-header">
-                    Traffic Report
-                </div>
-                <div class="card-body">
-                    <table class="table">
-                        <tr>
-                            <th>Traffic in</th>
-                            <Th>Traffic out</Th>
-                        </tr>
-                        <tr>
-                            <td id="traffic_in">0</td>
-                            <td id="traffic_out">0</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mt-4 border-0 border-bottom border-danger">
-            <div class="card">
-                <div class="card-header">
-                    Network Adaptor
-                </div>
-                <div class="card-body">
-                    <table class="table">
-                        <tr>
-                            <th>SO.</th>
-                            <th>Network interface</th>
-                            <th>Activity</th>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+        <div class="col-md-12 table-responsive">
+            <table class="table table-striped w-100 shadow table-secondary">
+                <thead>
+                    <tr class="">
+                        <th>Sno</th>
+                        <th>NiC</th>
+                        <th>IPv4</th>
+                        <th>IPv6</th>
+                        <th>Subnet Mask</th>
+                        <th></th>
+                        <th>More</th>
+                    </tr>
+                </thead>
+                <tbody id="table"></tbody>
+            </table>
         </div>
     </div>
+</div>
+<div class="bottom p-3 bg-dark text-white text-center">
+    <h6 id="machineInfo" class="col-md-12"></h6>
+</div>
+<div class="bottom-right mt-4 border-0 border-bottom border-danger bg-transparent">
+
+            <div class="card-header bg-transparent">Connections History</div>
+            <div class="card-body">
+                <table class="table table-striped table-borderless shadow table-danger">
+                    <thead>
+                    <tr>
+                        <th class="text-center">TODAY</th>
+                        <th class="text-center">ALL</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><h1 id="today" class="text-center rounded border border-danger"></h1></td><td><h1 id="all" class="text-center"></h1></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
 </div>
 <script src="./bootstrap/js/bootstrap.min.js"></script>
 <script src="./jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
-<script>
-    var xyValues = [
-        {x:50, y:7},
-        {x:60, y:8},
-        {x:70, y:8},
-        {x:80, y:9},
-        {x:90, y:9},
-        {x:100, y:9},
-    ];
-
-    new Chart("myChart", {
-        type: "line",
-        data: {
-            datasets: [{
-                pointRadius: 4,
-                pointBackgroundColor: "rgb(0,0,255)",
-                data: xyValues
-            }]
-        },
-        options: {
-            legend: {display: false},
-            scales: {
-                xAxes: [{ticks: {min: 40, max:160}}],
-                yAxes: [{ticks: {min: 6, max:9}}],
-            }
-        }
-    });
-</script>
 </body>
 </html>
-
-
-<!--            <div class="">-->
-<!--                <div class="row">-->
-<!--                    <h1 style="font-size: 200px; font-weight: bolder;" class="col-md-12"><span class="text-primary" style="letter-spacing: -10px">100</span> <sup><span style="font-size:20px">GB</span></sup></h1>-->
-<!--                    <h4 class="col-md-12">of data transferred</h4>-->
-<!--                </div>-->
-<!--                <div class="row p-3 shadow mb-4">-->
-<!--                    <div class="col-md-4">-->
-<!--                        <h6 class="text-primary">Traffic out</h6>-->
-<!--                        <div class=" border-0 border-top p-2">-->
-<!--                            30Gbs-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-4">-->
-<!--                        <h6 class="text-info">Traffic In</h6>-->
-<!--                        <div class=" border-0 border-top p-2 bg-info text-white">-->
-<!--                            30Gbs-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="col-md-4">-->
-<!--                        <h6>Speed</h6>-->
-<!--                        <div class=" border-0 border-top p-2">-->
-<!--                            100Gbs-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <canvas id="myChart" style="width:100%;max-width:700px"></canvas>-->
-<!--            </div>-->
 <script>
     $.get("traffic.php?os", function success(data){
-        console.log(data)
         let d = JSON.parse(data)
         $("#machineInfo").html(d.os_version)
     })
-    get_traffic();
 
-    function get_traffic() {
-        $.get("traffic.php?os2", function success(data){
+    function getStats() {
+        $.get("app/get_stats.php?stats", function success(data){
             console.log(data)
             let d = JSON.parse(data)
-            $("#traffic_in").html(d.in + " pa")
-            $("#traffic_out").html(d.out + " pa")
+            $("#today").html(d.today)
+            $("#all").html(d.connections)
         })
-
     }
+
+    $.get("app/get_interfaces.php", function success(data){
+        let d = JSON.parse(data)
+        $("#table").html(d)
+    })
+
     setInterval(function(){
-        get_traffic()
+        getStats()
     }, 4000)
 </script>
