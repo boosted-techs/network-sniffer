@@ -35,6 +35,10 @@ var (
 )
 
 func main() {
+	if os.Geteuid() != 0 {
+		fmt.Println("Sneak must run as root")
+		log.Fatal("Error")
+	}
 	/*
 		Let set out default structure to be used with in the software
 	*/
@@ -51,6 +55,7 @@ func main() {
 	filterPackets := flag.String("fp", "", "Filter packers for given interface. USAGE :  -sneaky=0 -fp=en0 where en0 is network interface/device")
 	decodePackets := flag.String("dp", "", "Filter packers for given interface. USAGE:  -sneaky=0 -dp=en0")
 	discoverDevices := flag.String("nic", "", "Discover Devices USAGE:  -sneaky=0 -nic where en0 is network interface/device")
+	promise_ := flag.Bool("pm", false, "To turn on promiscious mode, turn it true. USAGE: -sneaky=0 pm=true")
 	// readFilePacs := flag.String("sneakyread", "11", "")
 	flag.Parse()
 	if len(*wordPtr) > 0 {
@@ -60,6 +65,15 @@ func main() {
 			fmt.Println(SqlAddNIC())
 			execute = true
 		}
+
+		if *promise_ {
+			/*
+				Turning on Promiscious mode
+			*/
+			*&promiscuous = *promise_
+			execute = true
+		}
+
 		/*			lc = live capture		*/
 		if len(*liveCapture_) > 0 {
 			*&device = *liveCapture_
@@ -189,6 +203,7 @@ func liveCapture() {
 	// Open device
 	handle, err = pcap.OpenLive(device, snapshot_len, promiscuous, timeout)
 	if err != nil {
+		fmt.Println(err)
 		log.Fatal(err)
 	}
 	defer handle.Close()
