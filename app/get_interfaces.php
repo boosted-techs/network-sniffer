@@ -9,7 +9,7 @@ function _get_interfaces_today($date) {
     while ($row = mysqli_fetch_array($query)) {
         $string = "<tr>";
         $string .= "<td>" . $i . "</td>";
-        $string .= "<td>" . $row['interface'] . "</td>";
+        $string .= "<td><a href='./app/monitor.php?l=". $row['interface'] ."'>" . $row['interface'] . "</a></td>";
         $string .= "<td>" . $row['ipv4'] . "</td>";
         $string .= "<td>" . $row['ipv6'] . "</td>";
         $string .= "<td>" . $row['subnet'] . "</td>";
