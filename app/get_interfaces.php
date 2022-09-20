@@ -7,6 +7,9 @@ function _get_interfaces_today($date) {
     $results = "";
     $i = 1;
     while ($row = mysqli_fetch_array($query)) {
+        $r = explode(".", $row['ipv4']);
+        if (count($r) != 4)
+            continue;
         $string = "<tr>";
         $string .= "<td>" . $i . "</td>";
         $string .= "<td><a href='./app/monitor.php?l=". $row['interface'] ."'>" . $row['interface'] . "</a></td>";

@@ -2,7 +2,6 @@
     include_once "p.php";
     $i = $_GET['l'];
     $query = mysqli_query($db, "select * from interfaces where interface = '$i' order by id desc limit 1") or die(mysqli_error($db));
-    get_packets($i);
 ?>
 <!doctype html>
 <html lang="en">
@@ -65,17 +64,11 @@
         <div class="col-md-12 text-center pt-5">
             <img src="../logo.png" alt="Network Sniffer" style="width:50px;" class="rounded-pill">
             <h5 class="text-primary p-4 text-center">
-                <?php
-                $a = shell_exec("../sneaky/src/main/main -sneaky=0 -rp=$i");
-                var_dump($a);
-                ?>
                 <table class="table table-striped table-borderless table-dark shadow">
                     <tr>
                         <th>interface</th>
-                        <th>ipv4</th>
-                        <th>ipv6</th>
-                        <th>subnet</th>
-                        <th>default mask</th>
+                        <th>Internal IP address</th>
+
                         <th>Description</th>
                         <th>Date added</th>
                     </tr>
@@ -86,9 +79,7 @@
                     <tr>
                         <td><?=$row['interface']?></td>
                         <td><?=$row['ipv4']?></td>
-                        <td><?=$row['ipv6']?></td>
-                        <td><?=$row['subnet']?></td>
-                        <td><?=$row['defaultMask']?></td>
+
                         <td><?=$row['description']?></td>
                         <td><?=$row['date_added']?></td>
                     </tr>
@@ -144,6 +135,14 @@
             let d = JSON.parse(data)
             $("#today").html(d.today)
             $("#all").html(d.connections)
+        })
+    }
+
+    function monitorDevice() {
+        $.get("p.php?d=<?=$_GET['l']?>", function success(data){
+            console.log(data)
+            //let d = JSON.parse(data)
+
         })
     }
 
