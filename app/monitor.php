@@ -42,19 +42,16 @@
 <body>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="../">
             <img src="../logo.png" alt="Network Sniffer" style="width:40px;" class="rounded-pill">
         </a>
         <span class="navbar-text">SNEAKY</span>
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link active" href="#">HOME</a>
+                <a class="nav-link active" href="../">HOME</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="./alarm.html">Alarm</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./workflow.html">Work flow</a>
+                <a class="nav-link" href="./alarm.php">Alarm</a>
             </li>
         </ul>
     </div>
@@ -68,7 +65,8 @@
                     <tr>
                         <th>interface</th>
                         <th>Internal IP address</th>
-
+                        <th>Traffic In</th>
+                        <th>Traffic Out</th>
                         <th>Description</th>
                         <th>Date added</th>
                     </tr>
@@ -79,7 +77,8 @@
                     <tr>
                         <td><?=$row['interface']?></td>
                         <td><?=$row['ipv4']?></td>
-
+                        <td id="in"></td>
+                        <td id="out"></td>
                         <td><?=$row['description']?></td>
                         <td><?=$row['date_added']?></td>
                     </tr>
@@ -90,6 +89,21 @@
                 </table>
             </h5>
             <h5 class="text-center p-3">Packets</h5>
+            <table class="table table-danger shadow">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Size</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th></th>
+                    <th>Time</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+
+                </tbody>
+            </table>
         </div>
 
     </div>
@@ -99,18 +113,18 @@
 </div>
 <div class="bottom-right mt-4 border-0 border-bottom border-danger bg-transparent">
 
-    <div class="card-header bg-transparent">Connections History</div>
+    <div class="card-header bg-dark text-white p-3 text-center">LIVE Traffic</div>
     <div class="card-body">
-        <table class="table table-striped table-borderless shadow table-danger">
+        <table class="table table-striped table-borderless shadow table-warning">
             <thead>
             <tr>
-                <th class="text-center">TODAY</th>
-                <th class="text-center">ALL</th>
+                <th class="text-center">IN <span class='text-success'>&#8595</span></th>
+                <th class="text-center">OUT <span class='text-primary'>&#8593</span></th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td><h1 id="today" class="text-center rounded border border-danger"></h1></td><td><h1 id="all" class="text-center"></h1></td>
+                <td><small id="tfIn" class="text-center rounded"></small></td><td><small id="tfOut" class="text-center"></small></td>
             </tr>
             </tbody>
         </table>
@@ -131,23 +145,41 @@
 
     function getStats() {
         $.get("get_stats.php?stats", function success(data){
-            console.log(data)
             let d = JSON.parse(data)
-            $("#today").html(d.today)
-            $("#all").html(d.connections)
+            $("#tfIn").html(d.in + "Mbs")
+            $("#tfOut").html(d.out + "Mbs")
         })
     }
 
     function monitorDevice() {
         $.get("p.php?d=<?=$_GET['l']?>", function success(data){
-            console.log(data)
+            let r = JSON.parse(data)
             //let d = JSON.parse(data)
+            $("#in").html(r.traffic_in + " MBs")
+            $("#out").html(r.traffic_out + " MBs")
 
+            let h = r.data
+            let html;
+            h.forEach((row, index) => {
+                html += "<tr><td>" + (index + 1) + "</td>";
+                html += "<td>" + row.packet_size+ " KBs </td>";
+                html += "<td>" + row.src_ip + ":" + row.src_port + "</td>";
+                html += "<td>" + row.dst_ip + ":" + row.dst_port + "</td>";
+                html += "<td><b>" + row.traffic + "</b></td>";
+                html += "<td>" + row.timestamp + "</td></tr>"
+            })
+
+            $("#tbody").html(html)
         })
     }
 
-
+    monitorDevice()
     setInterval(function(){
         getStats()
+        //monitorDevice()
     }, 4000)
+
+    setInterval(function(){
+        monitorDevice()
+    }, 19000)
 </script>

@@ -14,10 +14,6 @@ function _get_interfaces_today($date) {
         $string .= "<td>" . $i . "</td>";
         $string .= "<td><a href='./app/monitor.php?l=". $row['interface'] ."'>" . $row['interface'] . "</a></td>";
         $string .= "<td>" . $row['ipv4'] . "</td>";
-        $string .= "<td>" . $row['ipv6'] . "</td>";
-        $string .= "<td>" . $row['subnet'] . "</td>";
-        $string .= "<td>" . $row['defaultMask'] . "</td>";
-        $string .= "<td>" . $row['description'] . "</td>";
         $i++;
         $results .= $string;
     }
