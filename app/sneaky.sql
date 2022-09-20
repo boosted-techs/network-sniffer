@@ -16,6 +16,40 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `alarm`
+--
+
+DROP TABLE IF EXISTS `alarm`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `alarm` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `date_added` date NOT NULL,
+  `live_tf_in` char(100) DEFAULT NULL,
+  `live_tf_out` char(100) DEFAULT NULL,
+  `cum_tf_in` char(100) DEFAULT NULL,
+  `cum_tf_out` char(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `alarm_limits`
+--
+
+DROP TABLE IF EXISTS `alarm_limits`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `alarm_limits` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `live_tf_limit` int DEFAULT NULL,
+  `live_cum_limit` int DEFAULT NULL,
+  `date_added` date NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `decoded_packets`
 --
 
@@ -36,7 +70,7 @@ CREATE TABLE `decoded_packets` (
   `protocal` char(100) DEFAULT NULL,
   `message` char(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16227 DEFAULT CHARSET=utf8mb4 ;
+) ENGINE=InnoDB AUTO_INCREMENT=16227 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -56,7 +90,7 @@ CREATE TABLE `interfaces` (
   `date_added` date DEFAULT NULL,
   `defaultMask` char(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 ;
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +110,7 @@ CREATE TABLE `live_packets` (
   `_read` smallint DEFAULT '0',
   `date_added` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11244 DEFAULT CHARSET=utf8mb4 ;
+) ENGINE=InnoDB AUTO_INCREMENT=69637 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -88,4 +122,4 @@ CREATE TABLE `live_packets` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-20 11:29:11
+-- Dump completed on 2022-09-20 19:03:08
