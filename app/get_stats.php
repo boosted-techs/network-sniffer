@@ -63,3 +63,28 @@ function read_interface_packets_packets() {
 
 if(isset($_GET['stats']))
     echo json_encode(read_interface_packets_packets());
+
+if(isset($_GET['graph']))
+   echo json_encode(getGraphStats());
+
+function getGraphStats() {
+    global $db;
+    $q = mysqli_query($db,"select * from live_packets  order by id desc limit 100");
+    $interface = get_interfaces();
+    $traffic_monitor[0] = [];
+    $traffic_monitor[1] = [];
+    $traffic_monitor['time'] = [];
+    while ($s = mysqli_fetch_array($q)) {
+        //print_r($s['packet_info']);
+        $d = explode(" ", $s['packet_info']);
+        $dst_ip = explode("=", $d[43]);
+        $packet_size = isset($d[1]) ? $d[1] : 0; //Bytes
+        $destination_ip = isset($dst_ip[1]) ? $dst_ip[1] : 0;
+        if (in_array($destination_ip, $interface))
+            $traffic_monitor[0][] += round(($packet_size/1024), 3);
+        else
+            $traffic_monitor[1][] += round(($packet_size/1024), 3);
+        $traffic_monitor['time'][] = $s['_time'];
+    }
+    return $traffic_monitor;
+}
