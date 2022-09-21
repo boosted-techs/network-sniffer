@@ -1,5 +1,7 @@
 <?php
 include_once "db.config.php";
+if (! isset($_SESSION['username']))
+    die("Access denied");
 
 //$a = shell_exec("sudo -u welcome whoami");
 //var_dump($a);

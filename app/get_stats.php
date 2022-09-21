@@ -1,6 +1,7 @@
 <?php
 include_once "db.config.php";
-
+if (! isset($_SESSION['username']))
+    die("Access denied");
 function _get_stats() {
     global $db;
     $query = mysqli_query($db, "select count(id) as connections, (select count(id) from interfaces where date_added = '" . date("Y-m-d") . "' and ipv4 != '') as _today from interfaces where ipv4 != ''") or die(mysqli_error($db));
@@ -26,6 +27,8 @@ function get_interfaces() {
 
 function read_interface_packets_packets() {
     global $db;
+    $devices_connected = mysqli_query($db, "select count(id) as devices from interfaces where date_added = '" . date("Y-m-d") . "'") or die(mysqli_error($db));
+    $devices_connected = mysqli_fetch_array($devices_connected);
     $q = mysqli_query($db,"select * from live_packets  order by id desc");
     $interface = get_interfaces();
     $traffic_in = 0;
@@ -58,6 +61,7 @@ function read_interface_packets_packets() {
     $traffic_monitor['out'] = round(($traffic_out/1024), 4);
     $traffic_monitor["live_in"] = round(($live_tf_in/1024), 3);
     $traffic_monitor["live_out"] = round(($live_tf_out/1024), 3);
+    $traffic_monitor['devices'] = $devices_connected['devices'];
     return $traffic_monitor;
 }
 

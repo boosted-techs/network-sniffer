@@ -54,9 +54,9 @@ if (! isset($_SESSION['username'])) {
             <li class="nav-item">
                 <a class="nav-link" href="./login.php?out">LOGOUT</a>
             </li>
-            <li class="nav-item bg-white p-3 text-dark">
+            <li class="nav-item bg-white p-3 text-dark"  onclick="window.location='profile.php'">
                 <img src="../user.png" alt="Network Sniffer" style="width:20px;" class="rounded-pill">
-                <?=$_SESSION['username']?>
+                <?=isset($_SESSION['username']) ? $_SESSION['username'] : 'USER'?>
             </li>
         </ul>
     </div>
