@@ -9,32 +9,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css"/>
     <link rel="icon" type="image/png" href="logo.png">
-    <style>
-        @font-face {
-            font-family : 'Open Sans';
-            src : url("./css/fonts/OpenSans-VariableFont_wdth,wght.ttf");
-        }
-        body {
-            font-family: "Open Sans";
-        }
-        .bottom {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            height: 50px;
-            z-index: 99;
-        }
-
-        .bottom-right{
-            position: fixed;
-            bottom: 55px;
-            right: 0;
-            width: 200px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
+<div class="login">
+    <div class="col-md-6 mx-auto mt-5 p-5 bg-white">
+        <div class="text-center">
+            <img src="logo.png" alt="Network Sniffer" style="width:100px;" class="rounded-pill">
+        </div>
+        <form action="app/login.php" method="post">
+            <h6>Username</h6>
+            <input type="text" class="form-control rounded-0" name="username"/>
+            <h6>Password</h6>
+            <input type="password" class="form-control rounded-0" name="password"/>
+            <input type="hidden" name="login"/>
+            <button class="btn btn-primary rounded-0 mt-3 form-control" type="submit">LOGIN</button>
+        </form>
+    </div>
+</div>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -46,10 +38,7 @@
                 <a class="nav-link active" href="#">HOME</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="./alarm.html">Alarm</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./workflow.html">Work flow</a>
+                <a class="nav-link" href="./app/alarm.php">Alarm</a>
             </li>
         </ul>
     </div>
@@ -67,12 +56,8 @@
                 <thead>
                     <tr class="">
                         <th>Sno</th>
-                        <th>NiC</th>
-                        <th>IPv4</th>
-                        <th>IPv6</th>
-                        <th>Subnet Mask</th>
-                        <th></th>
-                        <th>More</th>
+                        <th>Device</th>
+                        <th>Internet Protocol ADDRESS</th>
                     </tr>
                 </thead>
                 <tbody id="table"></tbody>
@@ -85,18 +70,18 @@
 </div>
 <div class="bottom-right mt-4 border-0 border-bottom border-danger bg-transparent">
 
-            <div class="card-header bg-transparent">Connections History</div>
+            <div class="card-header bg-dark text-white p-3 text-center">LIVE Traffic</div>
             <div class="card-body">
                 <table class="table table-striped table-borderless shadow table-danger">
                     <thead>
                     <tr>
-                        <th class="text-center">TODAY</th>
-                        <th class="text-center">ALL</th>
+                        <th class="text-center">IN <span class='text-success'>&#8595</span></th>
+                        <th class="text-center">OUT <span class='text-primary'>&#8593</span></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td><h1 id="today" class="text-center rounded border border-danger"></h1></td><td><h1 id="all" class="text-center"></h1></td>
+                        <td><small id="tfIn" class="text-center rounded"></small></td><td><small id="tfOut" class="text-center"></small></td>
                     </tr>
                     </tbody>
                 </table>
@@ -117,10 +102,9 @@
 
     function getStats() {
         $.get("app/get_stats.php?stats", function success(data){
-            console.log(data)
             let d = JSON.parse(data)
-            $("#today").html(d.today)
-            $("#all").html(d.connections)
+            $("#tfIn").html(d.live_in + "Mbs")
+            $("#tfOut").html(d.live_out + "Mbs")
         })
     }
 

@@ -14,32 +14,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css"/>
     <link rel="icon" type="image/png" href="../logo.png">
-    <style>
-        @font-face {
-            font-family : 'Open Sans';
-            src : url("../css/fonts/OpenSans-VariableFont_wdth,wght.ttf");
-        }
-        body {
-            font-family: "Open Sans";
-        }
-        .bottom {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            height: 50px;
-            z-index: 99;
-        }
-
-        .bottom-right{
-            position: fixed;
-            bottom: 55px;
-            right: 0;
-            width: 200px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
 </head>
 <body>
+<?php
+if (! isset($_SESSION['username'])) {
+    ?>
+    <div class="login">
+        <div class="col-md-6 mx-auto mt-5 p-5 bg-white">
+            <div class="text-center">
+                <img src="../logo.png" alt="Network Sniffer" style="width:100px;" class="rounded-pill">
+            </div>
+            <form action="login.php" method="post">
+                <h6>Username</h6>
+                <input type="text" class="form-control rounded-0" name="username"/>
+                <h6>Password</h6>
+                <input type="password" class="form-control rounded-0" name="password"/>
+                <input type="hidden" name="login"/>
+                <button class="btn btn-primary rounded-0 mt-3 form-control" type="submit">LOGIN</button>
+            </form>
+        </div>
+    </div>
+    <?php
+}
+?>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="../">
@@ -48,10 +46,17 @@
         <span class="navbar-text">SNEAKY</span>
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link active" href="../">HOME</a>
+                <a class="nav-link active" href="#">HOME</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="./alarm.php">Alarm</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./login.php?out">LOGOUT</a>
+            </li>
+            <li class="nav-item bg-white p-3 text-dark">
+                <img src="../user.png" alt="Network Sniffer" style="width:20px;" class="rounded-pill">
+                <?=$_SESSION['username']?>
             </li>
         </ul>
     </div>
