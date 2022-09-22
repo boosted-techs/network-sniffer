@@ -26,11 +26,13 @@ CREATE TABLE `alarm` (
   `id` int NOT NULL AUTO_INCREMENT,
   `date_added` date NOT NULL,
   `live_tf_in` char(100) DEFAULT NULL,
-  `live_tf_out` char(100) DEFAULT NULL,
   `cum_tf_in` char(100) DEFAULT NULL,
-  `cum_tf_out` char(100) DEFAULT NULL,
+  `_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `cum_tf` char(100) DEFAULT NULL,
+  `live_tf` char(100) DEFAULT NULL,
+  `_type` smallint DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +48,7 @@ CREATE TABLE `alarm_limits` (
   `live_cum_limit` int DEFAULT NULL,
   `date_added` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +72,7 @@ CREATE TABLE `decoded_packets` (
   `protocal` char(100) DEFAULT NULL,
   `message` char(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16227 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16227 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,8 +91,9 @@ CREATE TABLE `interfaces` (
   `description` text,
   `date_added` date DEFAULT NULL,
   `defaultMask` char(20) DEFAULT NULL,
+  `_read` smallint DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2177 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,8 +112,24 @@ CREATE TABLE `live_packets` (
   `packet_info` text,
   `_read` smallint DEFAULT '0',
   `date_added` date NOT NULL,
+  `_time` time DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69637 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=259758 DEFAULT CHARSET=utf8mb4 ;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `login`
+--
+
+DROP TABLE IF EXISTS `login`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `login` (
+  `username` char(100) NOT NULL DEFAULT 'admin',
+  `password` char(64) NOT NULL DEFAULT '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',
+  PRIMARY KEY (`username`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -122,4 +141,4 @@ CREATE TABLE `live_packets` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-20 19:03:08
+-- Dump completed on 2022-09-22 13:32:44
