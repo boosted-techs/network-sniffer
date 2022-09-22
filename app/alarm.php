@@ -65,7 +65,7 @@ if (! isset($_SESSION['username'])) {
         </ul>
     </div>
 </nav>
-<div class="container">
+<div class="container" style="margin-bottom: 100px">
     <button type="button" class="btn btn-primary mt-3 rounded-0" data-bs-toggle="modal" data-bs-target="#myModal">
         Add Traffic Limits
     </button>
@@ -84,7 +84,7 @@ if (! isset($_SESSION['username'])) {
         ?>
         <div class="col-md-12 shadow p-3 bg-dark">
             <h6 class="text-center p-2 text-white">
-                Set Alarm when Live traffic is <b class="text-danger"><?=$limits['live_tf_limit']?>GB</b> or Cumulative when Live traffic is <b class="text-danger"><?=$limits['live_cum_limit']?>GB</b>
+                Set Alarm when Live traffic is <b class="text-danger"><?=$limits['live_tf_limit']?>Mbs</b> or Cumulative when Live traffic is <b class="text-danger"><?=$limits['live_cum_limit']?>Mbs</b>
             </h6>
         </div>
         <div class="col-md-5 text-center pt-5">
@@ -108,7 +108,7 @@ if (! isset($_SESSION['username'])) {
         <div class="col-md-7 text-center pt-5">
             <div class="card-body">
                 <h4 class="text-center">Cumulative Traffic</h4>
-                <table class="table table-striped table-borderless shadow table-danger">
+                <table class="table table-striped table-borderless shadow table-success">
                     <thead>
                     <tr>
                         <th class="text-center">IN <span class='text-success'>&#8595</span></th>
@@ -125,19 +125,26 @@ if (! isset($_SESSION['username'])) {
         </div>
         <div class="col-md-12 p-3">
             <div class="card-body">
+                <div class="col-md-12 p-3">
+                    <canvas id="chart" class="shadow p-3" style="width:100%" height="200"></canvas>
+                </div>
+                <div class="alert alert-info">
+                    When the threshold traffic for live and cumulative traffic is reached, alarms are set and notifications shown here.
+                    It should be noted, when traffic threshold is set to 0, no alarms shall be set and no notifications shall be logged.
+                </div>
                 <h4 class="text-center">Alarms</h4>
-                <table class="table table-striped table-borderless shadow table-secondary">
+                <table class="table table-striped table-borderless shadow table-danger">
                     <thead>
                     <tr>
                         <th></th>
                         <th>Date</th>
-                        <th>Live Traffic In</th>
-                        <th>Live Traffic out</th>
-                        <th>Cumulative Traffic In</th>
-                        <th>Cumulative Traffic Out</th>
+                        <th>Live Traffic</th>
+                        <th>Cumulative Traffic</th>
+                        <th>Time</th>
+                        <th>Message</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="alarmBody">
 
                     </tbody>
                 </table>
@@ -163,12 +170,12 @@ if (! isset($_SESSION['username'])) {
             <div class="modal-body">
                 <div class="alert alert-info">
                     At such set limits, the system shall warn and add log at when the alarm has been recorded.
-                    NB: Traffic limiits are in Gigabytes
+                    NB: Traffic limits are in MegaBytes
                 </div>
                <form action="set-limits.php" method="post">
-                   <label>Maximum Network limit on live traffic in Gbs</label>
+                   <label>Maximum Network limit on live traffic in Mbs</label>
                    <input type="text" class="form-control rounded-0 border-0 border-bottom border-danger" placeholder="eg 2" name="liveTf"/>
-                   <label>Maximum Network Limit on Cumulative traffic in Gbs</label>
+                   <label>Maximum Network Limit on Cumulative traffic in Mbs</label>
                    <input type="text" class="form-control rounded-0 border-0 border-bottom border-danger" placeholder="eg 2" name="liveCf"/>
                    <button class="btn btn-primary rounded-0 mt-3 form-control">Add</button>
                </form>
@@ -189,6 +196,56 @@ if (! isset($_SESSION['username'])) {
 </body>
 </html>
 <script>
+    let xValues = [""];
+    let yValues = [];
+    let barColors = ["#dc3545"];
+
+    let chart = new Chart("chart", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+                label : "Cumulative Traffic",
+                backgroundColor: barColors,
+                data: yValues,
+                id : "A"
+            }, {
+                label: "Live traffic",
+                backgroundColor: ['#0066ff'],
+                data: yValues,
+                id : "B"
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    id: 'A',
+                    type: 'linear',
+                    position: 'left',
+                    ticks: {
+                        suggestedMin: 0,
+                        suggestedMax: 20
+                    },
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)"
+                    }
+                }, {
+                    id: 'B',
+                    type: 'linear',
+                    position: 'right',
+                    ticks: {
+                        suggestedMin: 0,
+                        suggestedMax: 20,
+                        display: false
+                    },
+                    gridLines: {
+                        color: "rgba(0, 0, 0, 0)"
+                    }
+                }]
+            }
+        }
+    });
+
     $.get("../traffic.php?os", function success(data){
         let d = JSON.parse(data)
         $("#machineInfo").html(d.os_version)
@@ -196,13 +253,34 @@ if (! isset($_SESSION['username'])) {
 
     function getStats() {
         $.get("get_stats.php?stats", function success(data){
-            console.log(data)
+            //console.log(data)
             let d = JSON.parse(data)
             $("#tfIn").html(d.in + "Mbs")
             $("#tfOut").html(d.out + "Mbs")
             $("#tfInLive").html(d.live_in + "Mbs")
             $("#tfOutLive").html(d.live_out + "Mbs")
         })
+    }
+    getAlarms();
+    function getAlarms() {
+        $.get("get_stats.php?alarm", function success(data) {
+            console.log(data)
+            let r = JSON.parse(data)
+            $("#alarmBody").html(r.content)
+            updateChart(r)
+        })
+    }
+
+    function updateChart(data) {
+        chart.data.labels = data[2]
+        chart.data.datasets.forEach((dataset,index) => {
+            // data[index].forEach((row) => {
+            //     dataset.data.push(row)
+            // })
+            dataset.data = data[index]
+            console.log(dataset)
+        });
+        chart.update()
     }
 
     getStats()

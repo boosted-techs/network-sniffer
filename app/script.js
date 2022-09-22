@@ -35,7 +35,8 @@ let chart = new Chart(canvas, {
                 position: 'right',
                 ticks: {
                     suggestedMin: 0,
-                    suggestedMax: 0.2
+                    suggestedMax: 0.2,
+                    display: false
                 },
                 gridLines: {
                     color: "rgba(0, 0, 0, 0)",

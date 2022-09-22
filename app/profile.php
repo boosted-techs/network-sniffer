@@ -44,7 +44,7 @@ if (! isset($_SESSION['username'])) {
         <span class="navbar-text">SNEAKY</span>
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link active" href="#">HOME</a>
+                <a class="nav-link active" href="../">HOME</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="../app/alarm.php">Alarm</a>
