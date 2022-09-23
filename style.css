@@ -1,0 +1,30 @@
+@font-face {
+    font-family : 'Open Sans';
+    src : url("./css/fonts/OpenSans-VariableFont_wdth,wght.ttf");
+}
+body {
+    font-family: "Open Sans", serif;
+}
+.bottom {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 50px;
+    z-index: 99;
+}
+
+.bottom-right{
+    position: fixed;
+    bottom: 55px;
+    right: 0;
+    width: 200px;
+}
+
+.login {
+    position: absolute;
+    width:100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.8);
+    z-index: 100;
+}

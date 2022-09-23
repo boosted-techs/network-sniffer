@@ -206,7 +206,7 @@ if (! isset($_SESSION['username'])) {
             labels: xValues,
             datasets: [{
                 label : "Cumulative Traffic",
-                backgroundColor: barColors,
+                backgroundColor: ['#dc3545'],
                 data: yValues,
                 id : "A"
             }, {

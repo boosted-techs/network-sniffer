@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,6 +15,9 @@
     <link rel="stylesheet" type="text/css" href="style.css"/>
 </head>
 <body>
+<?php
+if (! isset($_SESSION['username'])) {
+?>
 <div class="login">
     <div class="col-md-6 mx-auto mt-5 p-5 bg-white">
         <div class="text-center">
@@ -27,6 +33,9 @@
         </form>
     </div>
 </div>
+<?php
+}
+?>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -40,6 +49,13 @@
             <li class="nav-item">
                 <a class="nav-link" href="./app/alarm.php">Alarm</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./app/login.php?out">LOGOUT</a>
+            </li>
+            <li class="nav-item bg-white p-3 text-dark" onclick="window.location='app/profile.php'">
+                <img src="user.png" alt="Network Sniffer" style="width:20px;" class="rounded-pill">
+                <?=isset($_SESSION['username']) ? $_SESSION['username'] : "USER"?>
+            </li>
         </ul>
     </div>
 </nav>
@@ -51,8 +67,12 @@
                 Welcome to Sneaky Packet Capture Tool
             </h5>
         </div>
+        <div class="col-md-12">
+            <canvas id="chart" style="width:100%" height="200; margin-bottom:200px"></canvas>
+        </div>
         <div class="col-md-12 table-responsive">
-            <table class="table table-striped w-100 shadow table-secondary">
+            <h4 class="text-center p-4">Connected Devices</h4>
+            <table class="table table-striped w-100 shadow table-dark">
                 <thead>
                     <tr class="">
                         <th>Sno</th>
@@ -77,11 +97,13 @@
                     <tr>
                         <th class="text-center">IN <span class='text-success'>&#8595</span></th>
                         <th class="text-center">OUT <span class='text-primary'>&#8593</span></th>
+                        <th class="text-center"><small>Devices</small></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td><small id="tfIn" class="text-center rounded"></small></td><td><small id="tfOut" class="text-center"></small></td>
+                        <td><small id="devices"></small></td>
                     </tr>
                     </tbody>
                 </table>
@@ -99,21 +121,32 @@
         let d = JSON.parse(data)
         $("#machineInfo").html(d.os_version)
     })
-
+    getInterfaces()
     function getStats() {
         $.get("app/get_stats.php?stats", function success(data){
             let d = JSON.parse(data)
             $("#tfIn").html(d.live_in + "Mbs")
             $("#tfOut").html(d.live_out + "Mbs")
+            $("#devices").html(d.devices)
         })
     }
 
-    $.get("app/get_interfaces.php", function success(data){
-        let d = JSON.parse(data)
-        $("#table").html(d)
-    })
+    function getInterfaces() {
+        $.get("app/get_interfaces.php", function success(data) {
+            let d = JSON.parse(data)
+            $("#table").html(d)
+        })
+    }
 
     setInterval(function(){
         getStats()
     }, 4000)
+</script>
+<script src="app/script.js" type="text/javascript"></script>
+<script>
+    //Refreshes after a minute
+    setInterval(function(){
+        getGraphStats()
+        getInterfaces()
+    }, 90000)
 </script>

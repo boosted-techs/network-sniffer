@@ -132,7 +132,12 @@ func tryChanging() {
 
 func getDate() string {
 	currentTime := time.Now()
-	return fmt.Sprintf("%d-%d-%d]", currentTime.Year(), currentTime.Month(), currentTime.Day())
+	return fmt.Sprintf("%d-%d-%d", currentTime.Year(), currentTime.Month(), currentTime.Day())
+}
+
+func getTime() string {
+	currentTime := time.Now()
+	return fmt.Sprintf("%d:%d:%d", currentTime.Hour(), currentTime.Minute(), currentTime.Second())
 }
 func dbConnect() *sql.DB {
 	db, err := sql.Open("mysql", "root:root@tcp(127.0.0.1:3306)/sneaky")
@@ -217,8 +222,11 @@ func liveCapture() {
 		// Process packet here
 		//fmt.Println(packet)
 		//fmt.Println("running")
+
+		_time_ := getTime()
 		_packet := packet.String()
-		d, _err := db.Query("insert into live_packets (device, packet_info, date_added) values('" + device + "', '" + _packet + "', '" + getDate() + "')")
+		fmt.Println(_time_)
+		d, _err := db.Query("insert into live_packets (device, packet_info, date_added, _time) values('" + device + "', '" + _packet + "', '" + getDate() + "', '" + _time_ + "')")
 		d.Close()
 		fmt.Println(_err)
 		fmt.Println(d)
