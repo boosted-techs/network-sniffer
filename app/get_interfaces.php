@@ -26,5 +26,7 @@ function _get_interfaces_today($date) {
     return $results;
 }
 
+
+
 $r = _get_interfaces_today(date("Y-m-d"));
 echo json_encode($r);
