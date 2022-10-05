@@ -1,4 +1,5 @@
 <?php
+//die(hash("sha256", "admin"));
 session_start();
 ?>
 <!doctype html>
@@ -64,7 +65,7 @@ if (! isset($_SESSION['username'])) {
         <div class="col-md-12 text-center pt-5">
             <img src="logo.png" alt="Network Sniffer" style="width:50px;" class="rounded-pill">
             <h5 class="text-primary p-4 text-center">
-                Welcome to Sneaky Packet Capture Tool
+                Welcome to Sneaky Packet Network Monitoring Tool
             </h5>
         </div>
         <div class="col-md-12">

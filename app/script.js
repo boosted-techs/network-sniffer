@@ -53,7 +53,7 @@ let chart = new Chart(canvas, {
 
 function getGraphStats() {
     $.get("app/get_stats.php?graph", function xx(data) {
-        //console.log(data)
+        console.log(data)
         let rx = JSON.parse(data)
         //console.log(rx)
         updateGraph(rx.time, rx, 0)
