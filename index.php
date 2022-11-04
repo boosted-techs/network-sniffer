@@ -60,16 +60,27 @@ if (! isset($_SESSION['username'])) {
         </ul>
     </div>
 </nav>
-<div class="container">
+<div class="container mb-5">
     <div class="row">
         <div class="col-md-12 text-center pt-5">
             <img src="logo.png" alt="Network Sniffer" style="width:50px;" class="rounded-pill">
             <h5 class="text-primary p-4 text-center">
-                Welcome to Sneaky Packet Network Monitoring Tool
+                Sneaky Network Monitor
             </h5>
         </div>
         <div class="col-md-12">
-            <canvas id="chart" style="width:100%" height="200; margin-bottom:200px"></canvas>
+            <div class="row">
+                <h3 class="col-md-12">FILTER THROUGH</h3>
+                <div class="p-2 col-md-2">
+                    <h6>PROTOCOL</h6>
+                    <input type="checkbox" name="icmp" <?=isset($_SESSION['icmp']) ? "checked" : ''?>/> ICMP <input type="checkbox" name="http" <?=isset($_SESSION['http']) ? "checked" : ''?>/> HTTP <input type="checkbox" name="tcp" <?=isset($_SESSION['tcp']) ? "checked" : ''?>/> TCP
+                </div>
+                <div class="p-2 col-md-2">
+                    <H6>PORT</H6>
+                    <input type="checkbox" name="port80" <?=isset($_SESSION['port80']) ? "checked" : ''?>/> Port 80 <input type="checkbox" name="port443" <?=isset($_SESSION['port443']) ? "checked" : ''?>/> Port 443
+                </div>
+            </div>
+            <canvas CLASS="shadow p-4" id="chart" style="width:100%" height="200; margin-bottom:200px"></canvas>
         </div>
         <div class="col-md-12 table-responsive">
             <h4 class="text-center p-4">Connected Devices</h4>
@@ -134,6 +145,7 @@ if (! isset($_SESSION['username'])) {
 
     function getInterfaces() {
         $.get("app/get_interfaces.php", function success(data) {
+            console.log(data)
             let d = JSON.parse(data)
             $("#table").html(d)
         })
@@ -145,9 +157,60 @@ if (! isset($_SESSION['username'])) {
 </script>
 <script src="app/script.js" type="text/javascript"></script>
 <script>
-    //Refreshes after a minute
+    //Refreshes after a
     setInterval(function(){
         getGraphStats()
         getInterfaces()
     }, 90000)
+    $("[name=icmp]").on("change", function () {
+        let checked = 0;
+        let check = $(this) . is(":checked")
+        if (check)
+            checked = 1
+        $.post("app/filter.php?protocol=icmp&l=" + checked, function s(data) {
+            console.log(data)
+        })
+    })
+    $("[name=http]").on("change", function () {
+        //console.log("http")
+        let checked = 0;
+        let check = $(this) . is(":checked")
+        if (check)
+            checked = 1
+        $.post("app/filter.php?protocol=http&l=" + checked, function s(data) {
+            console.log(data)
+        })
+    })
+
+    $("[name=port80]").on("change", function () {
+        //console.log("http")
+        let checked = 0;
+        let check = $(this) . is(":checked")
+        if (check)
+            checked = 1
+        $.post("app/filter.php?protocol=port80&l=" + checked, function s(data) {
+            console.log(data)
+        })
+    })
+
+    $("[name=port443]").on("change", function () {
+        //console.log("http")
+        let checked = 0;
+        let check = $(this) . is(":checked")
+        if (check)
+            checked = 1
+        $.post("app/filter.php?protocol=port443&l=" + checked, function s(data) {
+            console.log(data)
+        })
+    })
+    $("[name=tcp]").on("change", function () {
+        //console.log("http")
+        let checked = 0;
+        let check = $(this) . is(":checked")
+        if (check)
+            checked = 1
+        $.post("app/filter.php?protocol=tcp&l=" + checked, function s(data) {
+            console.log(data)
+        })
+    })
 </script>

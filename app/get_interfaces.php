@@ -5,16 +5,20 @@ if (! isset($_SESSION['username']))
 function _get_interfaces_today($date) {
     global $db;
 
-    $d = shell_exec("sudo -u root ../sneaky/src/main/main -sneaky=0 -nic=en0");
+    $d = shell_exec("sudo u root ../sneaky/src/main/main -sneaky=0");
 
-    $query = mysqli_query($db, "select * from interfaces where date_added = '$date' and _read = 0 order by id desc") or die(mysqli_error($db));
+    $query = mysqli_query($db, "select * from interfaces where date_added = '$date' order by id desc") or die(mysqli_error($db));
     $results = "";
     mysqli_query($db, "update interfaces set _read = 1");
     $i = 1;
+    $d = "";
     while ($row = mysqli_fetch_array($query)) {
         $r = explode(".", $row['ipv4']);
         if (count($r) != 4)
             continue;
+        if ($d == $r)
+            continue;
+        $d = $r;
         $string = "<tr>";
         $string .= "<td>" . $i . "</td>";
         $string .= "<td><a href='./app/monitor.php?l=". $row['interface'] ."'>" . $row['interface'] . "</a></td>";

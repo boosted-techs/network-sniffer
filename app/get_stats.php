@@ -28,8 +28,9 @@ function get_interfaces() {
 }
 
 function read_interface_packets_packets() {
+    $date = date("Y-m-d");
     global $db;
-    $q = mysqli_query($db,"select * from live_packets  order by id desc");
+    $q = mysqli_query($db,"select * from live_packets where date_added = '$date' order by id desc");
     $interface = get_interfaces();
     $traffic_in = 0;
     $traffic_out = 0;
